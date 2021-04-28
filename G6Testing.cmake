@@ -7,8 +7,10 @@ add_library(g6::ut ALIAS g6-unit-tests-main)
 ##
 ## add_test overload
 ##
-## add_test(BASE_TEST_SOURCE [EXTRA_SOURCE_FILE...])
+## add_test(BASE_TEST_SOURCE [TARGET out_target_name] [EXTRA_SOURCE_FILE...])
 ##
+## Arguments:
+##  - TARGET [out]: get the generated target
 function(g6_add_unit_test _base_test_source)
 
   get_filename_component(_name "${_base_test_source}" NAME_WE)
@@ -24,6 +26,11 @@ function(g6_add_unit_test _base_test_source)
   target_link_libraries(${_target} PRIVATE g6::ut)
 
   add_test(NAME ${PROJECT_NAME}-${_name} COMMAND ${PROJECT_NAME}-${_name})
+
+  if (NOT TARGET ${PROJECT_NAME}-tests)
+    add_custom_target(${PROJECT_NAME}-tests)
+  endif()
+  add_dependencies(${PROJECT_NAME}-tests ${_target})
 
   if(ARG_TARGET)
     set(${ARG_TARGET} ${_target} PARENT_SCOPE)
