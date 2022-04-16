@@ -5,3 +5,4 @@ set(G6_CMAKE ON)
 
 include(G6Testing)
 include(G6Warnings)
+include(G6Sanitizers)
