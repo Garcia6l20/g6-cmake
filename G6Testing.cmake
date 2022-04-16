@@ -2,6 +2,9 @@ find_package(Catch2 REQUIRED)
 
 add_library(g6-unit-tests-main ${CMAKE_CURRENT_LIST_DIR}/src/catch2_main.cpp)
 target_link_libraries(g6-unit-tests-main PUBLIC Catch2::Catch2)
+if(WIN32)
+  target_compile_options(g6-unit-tests-main PRIVATE /EHsc)
+endif()
 add_library(g6::ut ALIAS g6-unit-tests-main)
 
 ##
