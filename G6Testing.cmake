@@ -7,6 +7,8 @@ if(WIN32)
 endif()
 add_library(g6::ut ALIAS g6-unit-tests-main)
 
+set(G6_TESTING_SANITIZER OFF CACHE INTERNAL "Sanitizer to use for tests")
+
 ##
 ## add_test overload
 ##
@@ -19,7 +21,7 @@ function(g6_add_unit_test _base_test_source)
   get_filename_component(_name "${_base_test_source}" NAME_WE)
 
   set(_arg_options)
-  set(_arg_one_value_options TARGET)
+  set(_arg_one_value_options TARGET SANITIZER)
   set(_arg_multi_value_options)
   cmake_parse_arguments(ARG "${_arg_options}" "${_arg_one_value_options}" "${_arg_multi_value_options}" ${ARGN})
 
@@ -33,6 +35,14 @@ function(g6_add_unit_test _base_test_source)
   if (NOT TARGET ${PROJECT_NAME}-tests)
     add_custom_target(${PROJECT_NAME}-tests)
   endif()
+
+  if (ARG_SANITIZER)
+    target_link_libraries(${_target} PRIVATE g6::sanitizer::${ARG_SANITIZER})
+  elseif(G6_TESTING_SANITIZER)
+    message(STATUS "using ${G6_TESTING_SANITIZER} sanitizer")
+    target_link_libraries(${_target} PRIVATE g6::sanitizer::${G6_TESTING_SANITIZER})
+  endif()
+
   add_dependencies(${PROJECT_NAME}-tests ${_target})
 
   if(ARG_TARGET)
