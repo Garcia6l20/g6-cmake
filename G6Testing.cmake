@@ -1,4 +1,5 @@
 find_package(Catch2 REQUIRED)
+include(Catch)
 
 add_library(g6-unit-tests-main ${CMAKE_CURRENT_LIST_DIR}/src/catch2_main.cpp)
 target_link_libraries(g6-unit-tests-main PUBLIC Catch2::Catch2)
@@ -30,7 +31,7 @@ function(g6_add_unit_test _base_test_source)
   add_executable(${_target} ${_name}.cpp ${ARG_UNPARSED_ARGUMENTS})
   target_link_libraries(${_target} PRIVATE g6::ut)
 
-  add_test(NAME ${PROJECT_NAME}-${_name} COMMAND ${PROJECT_NAME}-${_name})
+  catch_discover_tests(${_target})
 
   if (NOT TARGET ${PROJECT_NAME}-tests)
     add_custom_target(${PROJECT_NAME}-tests)
