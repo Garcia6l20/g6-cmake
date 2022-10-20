@@ -8,8 +8,8 @@ if(WIN32)
 endif()
 add_library(g6::ut ALIAS g6-unit-tests-main)
 
-set(G6_TESTING_SANITIZER OFF CACHE INTERNAL "Sanitizer to use for tests")
-
+set(G6_TESTING_SANITIZER none CACHE STRING "Sanitizer to use for tests")
+set_property(CACHE G6_TESTING_SANITIZER PROPERTY STRINGS "${G6_AVAILABLE_SANITIZERS}")
 ##
 ## add_test overload
 ##
@@ -40,7 +40,7 @@ function(g6_add_unit_test _base_test_source)
   if (ARG_SANITIZER)
     target_link_libraries(${_target} PRIVATE g6::sanitizer::${ARG_SANITIZER})
   elseif(G6_TESTING_SANITIZER)
-    message(STATUS "using ${G6_TESTING_SANITIZER} sanitizer")
+    message(VERBOSE "using ${G6_TESTING_SANITIZER} sanitizer")
     target_link_libraries(${_target} PRIVATE g6::sanitizer::${G6_TESTING_SANITIZER})
   endif()
 
