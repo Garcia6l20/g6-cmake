@@ -9,6 +9,7 @@ set(G6_CMAKE ON)
 
 include(G6Warnings)
 include(G6Sanitizers)
+include(G6StaticAnalyzers)
 
 if(BUILD_TESTING)
     include(G6Testing)
