@@ -35,6 +35,11 @@ function(g6_add_unit_test _base_test_source)
 
   if (NOT TARGET ${PROJECT_NAME}-tests)
     add_custom_target(${PROJECT_NAME}-tests)
+    add_custom_target(${PROJECT_NAME}-run-tests
+      COMMAND ctest
+      WORKING_DIRECTORY ${${PROJECT_NAME}_BINARY_DIR}
+    )
+    add_dependencies(${PROJECT_NAME}-run-tests ${PROJECT_NAME}-tests)
   endif()
 
   if (ARG_SANITIZER)
