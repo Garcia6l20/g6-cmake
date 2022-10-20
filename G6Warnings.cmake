@@ -36,7 +36,7 @@ set(MSVC_WARNINGS
 set(CLANG_WARNINGS
   -Wall
   -Wextra # reasonable and standard
-  -Wshadow # warn the user if a variable declaration shadows one from a parent
+  # -Wshadow # warn the user if a variable declaration shadows one from a parent
   # context
   -Wnon-virtual-dtor # warn the user if a class with virtual functions has a
   # non-virtual destructor. This helps catch hard to track
@@ -91,4 +91,5 @@ endif()
 
 add_library(g6-warnings INTERFACE)
 target_compile_options(g6-warnings INTERFACE ${G6_WARNINGS})
+set_target_properties(g6-warnings PROPERTIES EXPORT_NAME warnings)
 add_library(g6::warnings ALIAS g6-warnings)
